@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+# ─── CONFIGURATION ─────────────────────────────────────────────────────────────
+# List of IPs to monitor:
+HOSTS=(
+  "8.8.8.8"
+  "1.1.1.1"
+  "192.168.1.1"
+  "10.0.0.1"
+  "172.16.0.1"
+  "203.0.113.5"
+)
+
+# Recipients – add as many numbers as you like:
+RECIPIENTS=(
+  "+919876543210"
+  "+919812345678"
+  "+15551234567"
+)
+
+# Threshold in milliseconds:
+THRESHOLD_MS=100
+
+# Ping count per sample:
+COUNT=4
+
+# Pause between full cycles (in seconds):
+SLEEP_INTERVAL=60
+
+# In-house SMS gateway settings (Kannel HTTP API):
+GATEWAY_URL="http://127.0.0.1:13013/cgi-bin/sendsms"
+GATEWAY_USER="myuser"
+GATEWAY_PASS="mypass"
+
+# ─── FUNCTION TO SEND SMS ALERT VIA IN-HOUSE GATEWAY ────────────────────────────
+send_alert() {
+  local host="$1"
+  local avg_ms="$2"
+  local body
+
+  if [[ "$avg_ms" == "no response" ]]; then
+    body="ALERT: ${host} is DOWN (no response)"
+  else
+    body="ALERT: ${host} avg ping = ${avg_ms} ms exceeds threshold of ${THRESHOLD_MS} ms"
+  fi
+
+  for to in "${RECIPIENTS[@]}"; do
+    curl -s \
+      --data-urlencode "username=${GATEWAY_USER}" \
+      --data-urlencode "password=${GATEWAY_PASS}" \
+      --data-urlencode "to=${to}" \
+      --data-urlencode "text=${body}" \
+      "${GATEWAY_URL}" \
+      >/dev/null
+  done
+}
+
+# ─── MAIN LOOP ────────────────────────────────────────────────────────────────
+while true; do
+  for host in "${HOSTS[@]}"; do
+    avg_ms=$(ping -c "$COUNT" -q "$host" 2>/dev/null \
+      | awk -F'/' '/rtt/ { print $5 }')
+
+    if [[ $avg_ms =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
+      avg_int=${avg_ms%.*}
+      (( avg_int < 0 )) && avg_int=0
+
+      if (( avg_int > THRESHOLD_MS )); then
+        echo "$(date '+%F %T')  [WARNING] $host avg=${avg_ms}ms"
+        send_alert "$host" "$avg_ms"
+      else
+        echo "$(date '+%F %T')  [OK]      $host avg=${avg_ms}ms"
+      fi
+    else
+      echo "$(date '+%F %T')  [DOWN]    $host no response"
+      send_alert "$host" "no response"
+    fi
+  done
+
+  sleep "$SLEEP_INTERVAL"
+done
