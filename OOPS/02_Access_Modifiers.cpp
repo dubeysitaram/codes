@@ -36,6 +36,7 @@ private:
 void solve() {
 	Student s1;
 	s1.Study();
+	s1.Bunk();
 	// s1.chatofgf();// cannot access it
 
 }

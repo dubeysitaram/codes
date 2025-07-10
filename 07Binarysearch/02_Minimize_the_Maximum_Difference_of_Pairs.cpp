@@ -9,6 +9,10 @@ the difference of this pair is |nums[i] - nums[j]|, where |x| represents the abs
 Return the minimum maximum difference among all p pairs.
 We define the maximum of an empty set to be zero.
 
+1 <= nums.length <= 105
+0 <= nums[i] <= 109
+0 <= p <= (nums.length)/2
+
 */
 
 

@@ -57,3 +57,33 @@ int main() {
 		solve();
 	}
 }
+
+
+#include <set>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int minOperations(vector<int> prices, int k, int d) {
+    multiset<int> ms(prices.begin(), prices.end());
+    int ops = 0;
+    while (true) {
+        auto it_min = ms.begin();
+        auto it_max = prev(ms.end());
+        int mn = *it_min;
+        int mx = *it_max;
+        if (mx - mn < d) 
+            break;
+
+        int p = min({k, mx - 1, (mx - mn) / 2});
+        if (p < 1) {
+            return -1;
+        }
+        ms.erase(it_min);
+        ms.erase(it_max);
+        ms.insert(mn + p);
+        ms.insert(mx - p);
+        ops++;
+    }
+    return ops;
+}
