@@ -1,96 +1,67 @@
-#include <bits/stdc++.h>
+#include <algorithm>
+#include <iostream>
+#include <vector>
 using namespace std;
 
-// compute the KMP "lps" table for pattern P
-static vector<int> buildLPS(const string &P) {
-    int m = P.size();
-    vector<int> lps(m, 0);
-    for (int i = 1, len = 0; i < m; ) {
-        if (P[i] == P[len]) {
-            lps[i++] = ++len;
-        } else if (len) {
-            len = lps[len-1];
-        } else {
-            lps[i++] = 0;
+vector<vector<pair<int, int>>> adj;
+vector<int> bestPath;
+int P;
+
+void dfs(int u, int forwardCost, vector<int>& curPath, vector<char>& vis) {
+
+    if (curPath.size() > bestPath.size() ||
+        (curPath.size() == bestPath.size() &&
+         lexicographical_compare(curPath.begin(), curPath.end(),
+                                 bestPath.begin(), bestPath.end())))
+        bestPath = curPath;
+
+    for (auto [v, w] : adj[u]) {
+        if (!vis[v] && (forwardCost + w) * 2 <=P) { // still affordable after the return leg?
+            vis[v] = 1;
+            curPath.push_back(v);
+            dfs(v, forwardCost + w, curPath, vis);
+            curPath.pop_back();
+            vis[v] = 0;
         }
     }
-    return lps;
 }
 
-// return all start‑indices of P in T
-static vector<int> kmpSearch(const string &P, const string &T) {
-    int n = T.size(), m = P.size();
-    vector<int> res;
-    if (m == 0) {
-        // empty P: match at every position
-        res.reserve(n+1);
-        for (int i = 0; i <= n; i++) res.push_back(i);
-        return res;
-    }
-    auto lps = buildLPS(P);
-    for (int i = 0, j = 0; i < n; ) {
-        if (T[i] == P[j]) {
-            i++; j++;
-            if (j == m) {
-                res.push_back(i - m);
-                j = lps[j-1];
-            }
-        } else if (j) {
-            j = lps[j-1];
-        } else {
-            i++;
-        }
-    }
-    return res;
-}
+void optimalPath(int N, int M, int price, int* source, int* dest, int* weight) {
+    P = price;
+    adj.assign(N + 1, {});
 
-int findMaxRegexMatch(string sourceString, string pattern) {
-    int n = sourceString.size();
-    int star = pattern.find('*');
-    string pre = pattern.substr(0, star);
-    string suf = pattern.substr(star+1);
-    int pl = pre.size(), sl = suf.size();
-
-    // both empty => "*" => whole string
-    if (pl == 0 && sl == 0) return n;
-
-    auto prefPos = kmpSearch(pre, sourceString);
-    auto sufPos  = kmpSearch(suf, sourceString);
-
-    // suffix empty => pattern = pre* => longest = n - earliest pre
-    if (sl == 0) {
-        if (prefPos.empty()) return -1;
-        return n - prefPos.front();
+    for (int i = 0; i < M; ++i) {
+        int u = source[i], v = dest[i], w = weight[i];
+        adj[u].push_back({v, w});
+        adj[v].push_back({u, w});
     }
-    // prefix empty => pattern = *suf => longest = (latest suf end + 1)
-    if (pl == 0) {
-        if (sufPos.empty()) return -1;
-        return sufPos.back() + sl;
-    }
+    for (int i = 1; i <= N; ++i)
+        sort(adj[i].begin(), adj[i].end());
 
-    if (prefPos.empty() || sufPos.empty()) return -1;
-    int maxS = sufPos.back();
-    int ans = -1;
-    for (int i : prefPos) {
-        // ensure suffix starts at or after prefix ends:
-        if (maxS >= i + pl) {
-            ans = max(ans, maxS + sl - i);
-        }
+    vector<int> curPath{1};
+    vector<char> vis(N + 1, 0);
+    vis[1] = 1;
+    dfs(1, 0, curPath, vis);
+
+    vector<int> route = bestPath; // forward leg
+    for (int i = (int)bestPath.size() - 2; i >= 0; --i)
+        route.push_back(bestPath[i]);
+
+    for (size_t i = 0; i < route.size(); ++i) {
+        cout << route[i];
+        if (i + 1 != route.size())
+            cout << ' ';
     }
-    return ans;
+    cout << '\n';
 }
 
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-    string sourceString, pattern;
-    // e.g. input:
-    //   programming
-    //   r*in
-    if (!getline(cin, sourceString)) return 0;
-    if (!getline(cin, pattern)) return 0;
-
-    cout << findMaxRegexMatch(sourceString, pattern) << "\n";
+    int N, M, price;
+    cin >> N >> M;
+    cin >> price;
+    int source[100], dest[100], weight[100];
+    for (int i = 0; i < M; i++)
+        cin >> source[i] >> dest[i] >> weight[i];
+    optimalPath(N, M, price, source, dest, weight);
     return 0;
 }

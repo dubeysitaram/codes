@@ -14,19 +14,19 @@ public:
 	int nos;
 	bool flag;
 
-	// Default constructor
-	Student() {
-		cout << "I am Defaultconstructor" << endl;
-	}
+	// Default constructor removed so khokhla student nhi ban payegaa
+	// Student() {
+	// 	cout << "I am Defaultconstructor" << endl;
+	// }
 
-	// first Parameterized constructor 
+	// first Parameterized constructor with this pointer
 	Student(int _id, int _age , string _name, int _nos, bool _flag, int _numofgf) {
-		id = _id;
-		age = _age;
-		name = _name;
-		nos = _nos; 
-		flag = _flag;
-		numberofgf = _numofgf;
+		this->id = _id;
+		this->age = _age;
+		this->name = _name;
+		this->nos = _nos; 
+		this->flag = _flag;
+		this->numberofgf = _numofgf;
 	}
 
 	// second Parameterized constructor 
@@ -47,9 +47,19 @@ private:
 };
 
 void solve() {
-	Student s1;                            // Default constructor will be called because no value id passed in to constructor 
-	Student s2(1, 12, "sitaram", 5, 0, 4);// paramaterized constructor is called beacuse the parameters are passed
+	Student s2(1, 12, "sitaram", 5, 0, 4);
 	cout << s2.age << endl;
+	// since s2 is instanciated in stack space so we can call the properties  using the  '.' operator 
+	// like s2.age,s2.birthplace
+
+
+	// but if we declare the object of class student using the heap memory like below 
+	Student* s3 = new Student(1,12,"mohan",4,0,5);
+	// now to call the properties of the object we have to use the -> arrow 
+
+	cout<<s3->age<<endl;
+	cout<<s3->name<<endl;
+
 }
 
 int main() {

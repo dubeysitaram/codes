@@ -4,13 +4,13 @@ using namespace std;
 #define MOD 1000000007
 typedef long long ll;
 
-void dfs(int v,vetcor<vetcor<int>>edges){
-	
-}
+
 
 
 void solve() {
-
+int n;
+cin>>n;
+cout<<2*n<<endl;
 
 }
 
@@ -18,13 +18,13 @@ void solve() {
 int main() {
 ios_base::sync_with_stdio(false),cin.tie(nullptr);
 #ifndef ONLINE_JUDGE
-	freopen("Error.txt", "w", stderr);
+    freopen("Error.txt", "w", stderr);
 #endif
 
-	int t = 1;
-	cin >> t;
-	while (t--) {
-		solve();
-	}
+    int t = 1;
+    // cin >> t;
+    while (t--) {
+        solve();
+    }
 
 }

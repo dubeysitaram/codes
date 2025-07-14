@@ -62,7 +62,7 @@ void Union(int a,int b){
 	}
 }
 
-// TC ===O(alpha(n))
+// TC ===O(alpha(n)) almost constant amotorized time complexity
 
 
 
