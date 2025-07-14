@@ -1,4 +1,7 @@
 // 381. Insert Delete GetRandom O(1) - Duplicates allowed
+
+/*
+
 RandomizedCollection is a data structure that contains a collection of numbers, possibly duplicates (i.e., a multiset). It should support inserting and removing specific elements and also reporting a random element.
 
 Implement the RandomizedCollection class:
@@ -10,6 +13,8 @@ int getRandom() Returns a random element from the current multiset of elements. 
 You must implement the functions of the class such that each function works on average O(1) time complexity.
 
 Note: The test cases are generated such that getRandom will only be called if there is at least one item in the RandomizedCollection.
+
+*/
 
 class RandomizedCollection {
 public:

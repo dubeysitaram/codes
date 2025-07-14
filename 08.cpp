@@ -1,67 +1,82 @@
-#include <algorithm>
-#include <iostream>
-#include <vector>
-using namespace std;
+const int N = 1e6 + 5;
 
-vector<vector<pair<int, int>>> adj;
-vector<int> bestPath;
-int P;
+int parent[N];
+int Size[N];
 
-void dfs(int u, int forwardCost, vector<int>& curPath, vector<char>& vis) {
+void make(int v) {
+    parent[v] = v;
+    Size[v] = 1;
+}
 
-    if (curPath.size() > bestPath.size() ||
-        (curPath.size() == bestPath.size() &&
-         lexicographical_compare(curPath.begin(), curPath.end(),
-                                 bestPath.begin(), bestPath.end())))
-        bestPath = curPath;
+int find(int v) {
+    if (parent[v] == v)
+        return v;
+    return parent[v] = find(parent[v]);
+}
 
-    for (auto [v, w] : adj[u]) {
-        if (!vis[v] && (forwardCost + w) * 2 <=P) { // still affordable after the return leg?
-            vis[v] = 1;
-            curPath.push_back(v);
-            dfs(v, forwardCost + w, curPath, vis);
-            curPath.pop_back();
-            vis[v] = 0;
+void Union(int a, int b) {
+    int c = find(a);
+    int d = find(b);
+    if (c != d) {
+        if (Size[d] > Size[c])
+            swap(d, c);
+        parent[d] = c;
+        Size[c] += Size[d];
+    }
+}
+
+class Solution {
+public:
+    int largestIsland(vector<vector<int>>& grid) {
+        int n = grid.size();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] != 0) {
+                    make(i * n + j);
+                }
+            }
         }
+        int X[4] = {1, 0, -1, 0};
+        int Y[4] = {0, 1, 0, -1};
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] != 0) {
+                    for (int k = 0; k < 4; k++) {
+                        int new_x = i + X[k];
+                        int new_y = j + Y[k];
+                        if (new_x >= 0 && new_x < n && new_y >= 0 && new_y < n && grid[new_x][new_y]) {
+                            int p = find(new_x * n + new_y);
+                            Union(i * n + j, new_x * n + new_y);
+                        }
+                    }
+                }
+            }
+        }
+
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 0) {
+                    int temp_size = 0;
+                    set<int> seen_parents;
+                    for (int k = 0; k < 4; k++) {
+                        int new_x = i + X[k];
+                        int new_y = j + Y[k];
+                        if (new_x >= 0 && new_x < n && new_y >= 0 && new_y < n && grid[new_x][new_y]) {
+                            int p = find(new_x * n + new_y);
+                            if (seen_parents.find(p) == seen_parents.end()) {
+                                temp_size += Size[p];
+                                seen_parents.insert(p);
+                            }
+                        }
+                    }
+                    ans = max(temp_size + 1, ans);
+                } else {
+                    int p = find(i * n + j);
+                    ans = max(ans, Size[p]);
+                }
+            }
+        }
+        return ans;
     }
-}
-
-void optimalPath(int N, int M, int price, int* source, int* dest, int* weight) {
-    P = price;
-    adj.assign(N + 1, {});
-
-    for (int i = 0; i < M; ++i) {
-        int u = source[i], v = dest[i], w = weight[i];
-        adj[u].push_back({v, w});
-        adj[v].push_back({u, w});
-    }
-    for (int i = 1; i <= N; ++i)
-        sort(adj[i].begin(), adj[i].end());
-
-    vector<int> curPath{1};
-    vector<char> vis(N + 1, 0);
-    vis[1] = 1;
-    dfs(1, 0, curPath, vis);
-
-    vector<int> route = bestPath; // forward leg
-    for (int i = (int)bestPath.size() - 2; i >= 0; --i)
-        route.push_back(bestPath[i]);
-
-    for (size_t i = 0; i < route.size(); ++i) {
-        cout << route[i];
-        if (i + 1 != route.size())
-            cout << ' ';
-    }
-    cout << '\n';
-}
-
-int main() {
-    int N, M, price;
-    cin >> N >> M;
-    cin >> price;
-    int source[100], dest[100], weight[100];
-    for (int i = 0; i < M; i++)
-        cin >> source[i] >> dest[i] >> weight[i];
-    optimalPath(N, M, price, source, dest, weight);
-    return 0;
-}
+};
