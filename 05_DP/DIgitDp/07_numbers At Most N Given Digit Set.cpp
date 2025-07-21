@@ -56,3 +56,56 @@ public:
 		return res;
 	}
 };
+
+
+
+
+
+
+
+
+
+
+
+class Solution {
+public:
+	int dp[10][2];
+
+	int fn(int pos, int tight, vector<int>& arr, vector<int>& numberdig) {
+		if (pos == numberdig.size()) return 1;
+		if (dp[pos][tight] != -1) return dp[pos][tight];
+
+		int limit = tight ? numberdig[pos] : 9;
+		int res = 0;
+
+		for (int i = 0; i < arr.size(); i++) {
+			if (arr[i] > limit) break;
+			int newtight = (tight && arr[i] == limit) ? 1 : 0;
+			res += fn(pos + 1, newtight, arr, numberdig);
+		}
+
+		return dp[pos][tight] = res;
+	}
+
+	int atMostNGivenDigitSet(vector<string>& digits, int n) {
+		vector<int> arr, numberdig;
+		for (string& d : digits) arr.push_back(d[0] - '0');
+
+		while (n > 0) {
+			numberdig.push_back(n % 10);
+			n /= 10;
+		}
+		reverse(numberdig.begin(), numberdig.end());
+
+		memset(dp, -1, sizeof(dp));
+		int res = fn(0, 1, arr, numberdig);
+
+		// Add combinations with length < numberdig.size()
+		int len = numberdig.size();
+		for (int i = 1; i < len; i++) {
+			res += pow(arr.size(), i);
+		}
+
+		return res;
+	}
+};

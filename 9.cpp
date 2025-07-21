@@ -49,3 +49,4 @@ public:
         return isPossible(hi, adj, online, k, n) ? hi : lo;
     }
 };
+
