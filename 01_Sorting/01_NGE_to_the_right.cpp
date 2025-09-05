@@ -87,8 +87,7 @@ void mergesort(vector<pair<int, int> >& vec, vector<int>& ans, int low, int high
 // Function to find number of next
 // greater elements on the right of
 // a given element
-void nextGreaterElements(int n, vector<int>& nums,
-                         int queries, vector<int>& indices)
+void nextGreaterElements(int n, vector<int>& nums, int queries, vector<int>& indices)
 {
     // Storing elements of vector with their index into
     // vector of pair

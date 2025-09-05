@@ -1,5 +1,6 @@
 /*
-Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+Given a string s containing just the characters '(', ')', '{', '}', '[' and ']',
+determine if the input string is valid.
 
 An input string is valid if:
 
@@ -23,18 +24,18 @@ class Solution {
 public:
     bool isValid(string s) {
         stack<char>st;
-        for(int i=0;i<s.size();i++){
-            if(s[i]=='(' || s[i]=='{' || s[i]=='['){
-               st.push(s[i]);
-            }else{
-                if(st.empty())return false;
-                if((s[i]==')' && char(st.top())=='(') || (s[i]=='}' && char(st.top())=='{') || (s[i]==']' && char(st.top())=='[')){
+        for (int i = 0; i < s.size(); i++) {
+            if (s[i] == '(' || s[i] == '{' || s[i] == '[') {
+                st.push(s[i]);
+            } else {
+                if (st.empty())return false;
+                if ((s[i] == ')' && char(st.top()) == '(') || (s[i] == '}' && char(st.top()) == '{') || (s[i] == ']' && char(st.top()) == '[')) {
                     st.pop();
-                }else return false;
+                } else return false;
             }
-           
+
         }
-        if(!st.empty())return false;
+        if (!st.empty())return false;
         return true;
     }
 };

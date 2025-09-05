@@ -1,7 +1,8 @@
 /*
 12. What is coupling in OOP?
 
-Coupling in OOP describes the degree of interdependence between classes or modules. It determines how closely different modules or classes are linked to each other, impacting the system's flexibility, maintainability, and testability.
+Coupling in OOP describes the degree of interdependence between classes or modules. 
+It determines how closely different modules or classes are linked to each other, impacting the system's flexibility, maintainability, and testability.
 
 Loose coupling is generally preferred in software design.
 
@@ -21,15 +22,20 @@ Message Coupling: The lowest form of coupling where modules communicate only thr
 
 Relationship with SOLID Principles
 
-Single Responsibility Principle (SRP): Adhering to SRP typically results in low coupling since classes have a singular focus, thereby minimizing dependencies.
+Single Responsibility Principle (SRP): Adhering to SRP typically results in low coupling since classes have a singular focus, 
+thereby minimizing dependencies.
 
-Open-Closed Principle (OCP): Emphasizing extensibility without modification, OCP reduces the risk of tight coupling as extensions are typically made through interfaces or abstract classes.
+Open-Closed Principle (OCP): Emphasizing extensibility without modification, 
+OCP reduces the risk of tight coupling as extensions are typically made through interfaces or abstract classes.
 
-Liskov Substitution Principle (LSP): When derived classes can replace their base classes without side effects, there's often a reduction in coupling, ensuring modules can operate independently of the specific derived class in use.
+Liskov Substitution Principle (LSP): When derived classes can replace their base classes without side effects, 
+there's often a reduction in coupling, ensuring modules can operate independently of the specific derived class in use.
 
-Interface Segregation Principle (ISP): By endorsing focused interfaces rather than "one-size-fits-all" ones, ISP naturally leads to decreased coupling as classes aren't forced to depend on methods they don't use.
+Interface Segregation Principle (ISP): By endorsing focused interfaces rather than "one-size-fits-all" ones, 
+ISP naturally leads to decreased coupling as classes aren't forced to depend on methods they don't use.
 
-Dependency Inversion Principle (DIP): By relying on abstractions rather than concrete implementations, DIP promotes low coupling, making systems more modular and adaptable.
+Dependency Inversion Principle (DIP): By relying on abstractions rather than concrete implementations, 
+DIP promotes low coupling, making systems more modular and adaptable.
 
  */
 

@@ -40,7 +40,6 @@ public:
 				continue;
 
 			for (auto& [v, w] : adj[u]) {
-				ispossible
 				if (w < thresh || !online[v])
 					continue;
 				long long nd = d + w;

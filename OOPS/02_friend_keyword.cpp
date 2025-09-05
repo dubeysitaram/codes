@@ -1,7 +1,8 @@
 /*
 friend is a keyword in C++ that is used to share the information of a class that was previously hidden.
 
-For example, the private members of a class are hidden from every other class and cannot be modified except through getters or setters.
+For example, the private members of a class are hidden from every other class and
+cannot be modified except through getters or setters.
 
 Similarly, the protected members are hidden from all classes other than its children classes."
 
@@ -12,9 +13,9 @@ using namespace std;
 
 class A
 {
-  private:
+private:
     int x;
-  public:
+public:
     A(int _x): x(_x)
     {
         //intainiting list
@@ -38,7 +39,7 @@ class A
 
 class B
 {
-  public:
+public:
     int getx(const A &p)
     {
         cout << p.x << endl;

@@ -127,3 +127,36 @@ void Union(int a, int b) {
 		Size[c] += Size[d];
 	}
 }
+
+
+// ---------------------------------------MEMORY ISSUES MANAGED TEMPLATE-----------------------------
+#include <bits/stdc++.h>
+using namespace std;
+
+unordered_map<int, int> parent;
+unordered_map<int, int> size;
+
+void make(int v) {
+	if (parent.find(v) == parent.end()) {
+		parent[v] = v;
+		size[v] = 1;
+	}
+}
+
+int findParent(int v) {
+	if (parent[v] == v) return v;
+	return parent[v] = findParent(parent[v]); // Path compression
+}
+
+void Union(int a, int b) {
+	a = findParent(a);
+	b = findParent(b);
+	if (a != b) {
+		if (size[a] < size[b])
+			swap(a, b); // Attach smaller to larger
+		parent[b] = a;
+		size[a] += size[b];
+	}
+}
+
+

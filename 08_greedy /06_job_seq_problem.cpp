@@ -34,8 +34,8 @@ Constraints:
 using namespace std;
 
 vector<int> jobSequencing(vector<int> &deadline, vector<int> &profit) {
-     int n = deadline.size();
-    
+    int n = deadline.size();
+
 
     // pair the profit and deadline of
     // all the jos together
@@ -51,11 +51,11 @@ vector<int> jobSequencing(vector<int> &deadline, vector<int> &profit) {
     // to maintain the scheduled jobs based on profit
     multiset<int>ms;
     for (const auto &job : jobs) {
-        
+
         // if job can be scheduled within its deadline
         if (job.first > ms.size())
             ms.insert(job.second);
-        
+
         // Replace the job with the lowest profit
         else if (!ms.empty() && ms.begin() < job.second) {
             ms.erase(ms.begin());
@@ -76,6 +76,6 @@ int main() {
     vector<int> deadline = {2, 1, 2, 1, 1};
     vector<int> profit = {100, 19, 27, 25, 15};
     vector<int> ans = jobSequencing(deadline, profit);
-    cout<<ans[0]<<" "<<ans[1];
+    cout << ans[0] << " " << ans[1];
     return 0;
 }

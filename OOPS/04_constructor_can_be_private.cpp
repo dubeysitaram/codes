@@ -23,7 +23,7 @@ class Box
 int main()
 {
     // Box b;if we do not declare the object then we can declare the constructor private
-    // so answer is yes the constructoor can be made private ubtill direct intaintiation of object is
+    // so answer is yes the constructoor can be made private untill direct intaintiation of object is
     // not there
 
 }
@@ -43,7 +43,7 @@ class Box
     Box(int _w) : width(_w)
     {
     }
-  public :
+public :
     int getWidth() const
     {
         return width;
@@ -61,7 +61,7 @@ class BoxFactory
 {
     int count = 0;
 
-  public:
+public:
     Box *getbox()
     {
         count++;

@@ -2,7 +2,7 @@
 
 /*
 
-You are given an integer array nums. 
+You are given an integer array nums.
 The range of a subarray of nums is the difference between the largest and smallest element in the subarray.
 
 Return the sum of all subarray ranges of nums.
@@ -27,7 +27,6 @@ public:
         }
         return res;
     }
-
     vector<long long> getPGEE(vector<int>& arr) {
         long long n = arr.size();
         vector<long long> res(n, -1);
@@ -41,6 +40,7 @@ public:
         }
         return res;
     }
+
     vector<long long> NSERIGHT(vector<int>& v) {
         stack<long long> st;
         long long n = v.size();

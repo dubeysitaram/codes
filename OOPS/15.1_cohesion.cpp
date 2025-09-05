@@ -6,7 +6,8 @@
 
 11. What is cohesion in OOP?
 
-Cohesion in OOP refers to how closely the methods and data within a single class are related to one another. A highly cohesive class is focused on a specific task or responsibility, making it easier to maintain, understand, and ensure reliability.
+Cohesion in OOP refers to how closely the methods and data within a single class are related to one another.
+A highly cohesive class is focused on a specific task or responsibility, making it easier to maintain, understand, and ensure reliability.
 
 High cohesion is a desired attribute because it means that methods and properties within a class work together in a unified manner.
 In contrast, low cohesion indicates that a class has multiple, often unrelated responsibilities, making it harder to understand and maintain.

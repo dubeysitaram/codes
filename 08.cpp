@@ -80,3 +80,75 @@ public:
         return ans;
     }
 };
+
+
+class Solution {
+public:
+    pair<int, int> count01(string &s) {
+        for (auto it : s) {
+            if (it == '0')z++;
+            else o++;
+        }
+        return {z, o};
+    }
+    int fn(int pos, int i, int j, int m, int n, int sz, vector<pair<string, pair<int, int>>>&v) {
+        if (i >= m || j >= n)return INT_MIN;
+        if (pos >= sz)return 0;
+        int ans = 0;
+        int x = v[pos].second.first;
+        int y = v[pos].second.second;
+        int take = 1 + fn(pos + 1, i + x, j + y , m, n, sz, v);
+        int skip = fn(pos + 1, i, j, m, n, sz, v);
+        return max(take, skip);
+
+    }
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        vector<pair<string, pair<int, int>>>v;
+        for (auto it : strs) {
+            pair<int, int> pp  = count01(it);
+            v.push_back({it, {pp.first, pp.second}});
+
+        }
+        int sz = v.size();
+        return fn(0, 0, 0, m, n, sz, v);
+
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
